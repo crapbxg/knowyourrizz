@@ -362,35 +362,7 @@ document.getElementById('calc').addEventListener('click', async ()=>{
 
   const res = document.getElementById('result'); res.innerHTML = out; res.style.display = 'block';
 
-  /* ---------- Optional: POST to Google Form if user consented and FORM_ACTION is set ---------- */
-  const saveConsent = document.getElementById('saveConsent').checked;
-  if(FORM_ACTION && saveConsent){
-    // Build form data object using configured entry IDs
-    const fd = new FormData();
-    fd.append(FORM_FIELDS.name, name);
-    fd.append(FORM_FIELDS.gender, gender);
-    fd.append(FORM_FIELDS.country, country);
-    fd.append(FORM_FIELDS.age, age);
-    fd.append(FORM_FIELDS.height, hcm);
-    fd.append(FORM_FIELDS.weight, weight || '');
-    fd.append(FORM_FIELDS.pct_india, toPct(localR.adj));
-    fd.append(FORM_FIELDS.pct_world, toPct(worldR.adj));
-    fd.append(FORM_FIELDS.count_india, indiaPossible);
-    fd.append(FORM_FIELDS.count_world, worldPossible);
 
-    // Submit by POST to Google Forms endpoint (CORS note: browsers sometimes block fetch to google forms; fallback to creating a temporary form and submitting)
-    try {
-      // attempt fetch first
-      await fetch(FORM_ACTION, { method:'POST', mode:'no-cors', body: fd });
-      // use no-cors to avoid CORS failure; no-cors doesn't give response — it's fire-and-forget
-      alert('Result saved (consented).');
-    } catch(e){
-      console.warn('Auto-save failed (CORS). You can still copy your result manually.');
-    }
-  } else if (saveConsent && !FORM_ACTION){
-    alert('Consent checked but no Google Form configured. Please set FORM_ACTION in the code to enable saving.');
-  }
-});
 </script>
 </body>
 </html>
